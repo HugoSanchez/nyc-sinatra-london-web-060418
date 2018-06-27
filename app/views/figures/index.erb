@@ -1,0 +1,8 @@
+<!-- <h1>Blog Posts:</h1> -->
+<% @figures.each do |figure| %>
+<div>
+  <p><%= figure.name %></p>
+</div>
+  <a href="/figures/<%= figure.id %>">View</a>
+  <a href="/figures/<%= figure.id %>/edit">Edit</a>
+<% end %>
