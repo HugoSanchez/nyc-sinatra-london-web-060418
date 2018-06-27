@@ -19,13 +19,46 @@ class FiguresController < ApplicationController
       FigureTitle.create(figure_id: @figure.id, title_id: @title.id)
       # @figure.titles << @title
     end
+    if !params["landmark"]["name"].empty?
+      @landmark = Landmark.create(params[:landmark])
+      @landmark.figure_id = @figure.id
+      @landmark.save
+    end
 
     redirect :"/figures/#{@figure.id}"
   end
 
   get '/figures/:id' do
     @figure = Figure.find(params[:id])
+    #new
+    @titles = Title.all
+    @landmarks = Landmark.all
     erb :'/figures/show'
   end
+
+  get '/figures/:id/edit' do
+    @figure = Figure.find(params[:id])
+    @titles = Title.all
+    @landmarks = Landmark.all
+
+    erb :'/figures/edit'
+  end
+
+  patch "/figures/:id" do
+    @figure = Figure.find(params[:id])
+    @figure.update(params[:figure])
+    if !params["title"]["name"].empty?
+      @title = Title.create(params[:title])
+      FigureTitle.create(figure_id: @figure.id, title_id: @title.id)
+      # @figure.titles << @title
+    end
+    if !params["landmark"]["name"].empty?
+      @landmark = Landmark.create(params[:landmark])
+      @landmark.figure_id = @figure.id
+      @landmark.save
+    end
+    redirect "/figures/#{@figure.id}"
+  end
+
 
 end
